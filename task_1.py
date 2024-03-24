@@ -23,33 +23,33 @@ def input_error(func):  # Decorator to handle input errors and exceptions
 @input_error
 def add_contact(args, contacts):  # Handler function to add a new contact
     if len(args)!=2:
-        return IndexError
+        raise IndexError("Please provide all required arguments.")
     name, phone = args
     if not phone.isdigit():
-        return ValueError
+        raise ValueError("Phone number is not numeric")
     contacts[name] = phone
     return "Contact added."
 
 @input_error
 def change_contact(args, contacts):  # Handler function to change an existing contact's phone number
     if len(args)!=2:
-        return IndexError
+        raise IndexError("Pleas provide name and new phone number")
     name, new_phone=args
     if name not in contacts:
-        return KeyError
+        raise KeyError("Contact not found.")
     if not new_phone.isdigit():
-        return ValueError
+        raise ValueError("New phone number is not numeric")
     contacts[name]=new_phone
-    return "Phone number for {name} is updated to {new_phone}"
+    return f"Phone number for {name} is updated to {new_phone}"
    
 
 @input_error
 def display_contact(args, contacts):  # Handler function to display phone number of a contact
     if len(args)!=1:
-        return IndexError
+        raise IndexError("Please provide the name of the contact")
     name=args[0]
     if name not in contacts:
-        return KeyError
+        raise KeyError("contact not found")
     return f"Phone number for {name} is {contacts[name]}"
     
     

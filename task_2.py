@@ -13,7 +13,7 @@ class Name(Field):
 class Phone(Field):
     def __init__(self, value): # Check if the phone number is a 10-digit string
         if not isinstance(value, str) or len(value) != 10 or not value.isdigit():
-            return ValueError("Phone number must be a 10 digit string.")
+            raise ValueError("Phone number must be a 10 digit string.")
         super().__init__(value)
 
 class Record:
@@ -53,4 +53,43 @@ class AddressBook(UserDict):
     def delete_record_by_name(self, name): # Delete a record by name from the address book
         if name in self.data:
             del self.data[name]
+        else:
+            print(f"Record with name {name}, not found.")
+
+# Creation of a new address book 
+book = AddressBook()
+
+# Creation of a entry for John
+john_record = Record("John")
+john_record.add_phone_number("1234567890")
+john_record.add_phone_number("5555555555")
+
+# Add a John entry to the address book
+book.add_record(john_record)
+
+# Creating and adding a new entry for Jane
+jane_record = Record("Jane")
+jane_record.add_phone_number("9876543210")
+book.add_record(jane_record)
+
+# Displaying all entries in the contact list
+for name, record in book.data.items():
+    print(record)
+
+# Find and edit a phone number for John
+john = book.search_record_by_name("John")
+john.edit_phone_number("1234567890", "1112223333")
+
+print(john)  # Displaying: Contact name: John, phones: 1112223333; 5555555555
+
+# Searching for a specific phone number in John's entry
+found_phone = john.find_phone_number("5555555555")
+print(f"{john.name}: {found_phone}")  
+# Deletion: 5555555555
+john.remove_phone_number("5555555555")
+
+print(john)
+
+# Deletion Jane's entry
+book.delete_record_by_name("Jane")
 
